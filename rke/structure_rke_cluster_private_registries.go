@@ -25,6 +25,20 @@ func flattenRKEClusterPrivateRegistries(p []rancher.PrivateRegistry) []interface
 			obj["user"] = in.User
 		}
 
+		if in.ECRCredentialPlugin != nil {
+			if len(in.ECRCredentialPlugin.AwsAccessKeyID) > 0 {
+				obj["aws_access_key_id"] = in.ECRCredentialPlugin.AwsAccessKeyID
+			}
+
+			if len(in.ECRCredentialPlugin.AwsSecretAccessKey) > 0 {
+				obj["aws_secret_access_key"] = in.ECRCredentialPlugin.AwsSecretAccessKey
+			}
+
+			if len(in.ECRCredentialPlugin.AwsSessionToken) > 0 {
+				obj["aws_session_token"] = in.ECRCredentialPlugin.AwsSessionToken
+			}
+		}
+
 		out = append(out, obj)
 	}
 
@@ -58,6 +72,23 @@ func expandRKEClusterPrivateRegistries(p []interface{}) []rancher.PrivateRegistr
 		if v, ok := in["user"].(string); ok && len(v) > 0 {
 			obj.User = v
 		}
+
+		if v, ok := in["aws_access_key_id"].(string); ok && len(v) > 0 {
+			ecrCredentialPlugin := &rancher.ECRCredentialPlugin{}
+
+			ecrCredentialPlugin.AwsAccessKeyID = v
+
+			if v, ok := in["aws_secret_access_key"].(string); ok && len(v) > 0 {
+				ecrCredentialPlugin.AwsSecretAccessKey = v
+
+				if v, ok := in["aws_session_token"].(string); ok && len(v) > 0 {
+					ecrCredentialPlugin.AwsSessionToken = v
+				}
+			}
+
+			obj.ECRCredentialPlugin = ecrCredentialPlugin
+		}
+
 		out = append(out, obj)
 	}
 

@@ -20,6 +20,23 @@ func init() {
 			URL:       "url.terraform.test",
 			User:      "user",
 		},
+		{
+			IsDefault: true,
+			URL:       "url.terraform.test",
+			ECRCredentialPlugin: &rancher.ECRCredentialPlugin{
+				AwsAccessKeyID:     "key",
+				AwsSecretAccessKey: "secret",
+			},
+		},
+		{
+			IsDefault: true,
+			URL:       "url.terraform.test",
+			ECRCredentialPlugin: &rancher.ECRCredentialPlugin{
+				AwsAccessKeyID:     "key",
+				AwsSecretAccessKey: "secret",
+				AwsSessionToken:    "token",
+			},
+		},
 	}
 	testRKEClusterPrivateRegistriesInterface = []interface{}{
 		map[string]interface{}{
@@ -27,6 +44,19 @@ func init() {
 			"password":   "XXXXXXXX",
 			"url":        "url.terraform.test",
 			"user":       "user",
+		},
+		map[string]interface{}{
+			"is_default":            true,
+			"url":                   "url.terraform.test",
+			"aws_access_key_id":     "key",
+			"aws_secret_access_key": "secret",
+		},
+		map[string]interface{}{
+			"is_default":            true,
+			"url":                   "url.terraform.test",
+			"aws_access_key_id":     "key",
+			"aws_secret_access_key": "secret",
+			"aws_session_token":     "token",
 		},
 	}
 }
